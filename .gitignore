@@ -1,0 +1,20 @@
+# General CMake files
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+*.cmake
+cmake-build-*/
+
+# Build directory
+build/
+
+# Compiled Object files
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+
+.idea
