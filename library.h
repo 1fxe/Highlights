@@ -96,5 +96,4 @@ namespace Highlights {
             (JNIEnv *, jobject);
 
     }
-#endif
 }
