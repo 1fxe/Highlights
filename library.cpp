@@ -137,7 +137,7 @@ namespace Highlights {
     // TODO Check this works
     void Java_dev_fxe_highlights_Highlights_getNumHighlights(JNIEnv *env, jobject, jstring groupId, jobject sigFilter,
                                                              jobject tagFilter) {
-        auto groupStr = JSTR_TO_CSTR(env, groupId);
+        // TODO CACHE these fieldscz
         jclass sigFilterClass = env->GetObjectClass(sigFilter);
         jmethodID sigFilterValueMethodId = env->GetMethodID(sigFilterClass, "value", "()I");
         auto sigFilterValue = static_cast<int>(env->CallIntMethod(sigFilter, sigFilterValueMethodId));
@@ -148,8 +148,9 @@ namespace Highlights {
         auto tagFilterValue = static_cast<int>(env->CallIntMethod(tagFilter, tagFilterValueMethodId));
         auto tagFilterEnum = (GfeSDK::NVGSDK_HighlightType) tagFilterValue;
 
-        Highlights::g_highlights.OnGetNumHighlights(groupStr, sigFilterEnum, tagFilterEnum);
-        (env)->ReleaseStringUTFChars(groupId, groupStr);
+        auto groupStr = (env)->GetStringCritical(groupId, nullptr);
+        Highlights::g_highlights.OnGetNumHighlights(UTF_16_to_8(groupStr), sigFilterEnum, tagFilterEnum);
+        (env)->ReleaseStringCritical(groupId, groupStr);
     }
 
     // TODO Check this works
@@ -160,6 +161,7 @@ namespace Highlights {
         auto sigFilterValue = static_cast<int>(env->CallIntMethod(sigFilter, sigFilterValueMethodId));
         auto sigFilterEnum = (GfeSDK::NVGSDK_HighlightSignificance) sigFilterValue;
 
+        // TODO CACHE these fieldscz
         jclass tagFilterClass = env->GetObjectClass(tagFilter);
         jmethodID tagFilterValueMethodId = env->GetMethodID(tagFilterClass, "value", "()I");
         auto tagFilterValue = static_cast<int>(env->CallIntMethod(tagFilter, tagFilterValueMethodId));
@@ -168,7 +170,9 @@ namespace Highlights {
         auto groupIdsArray = new const char *[numGroups];
         for (int i = 0; i < numGroups; i++) {
             auto groupId = (jstring) env->GetObjectArrayElement(groupIds, i);
-            groupIdsArray[i] = JSTR_TO_CSTR(env, groupId);
+            auto groupIdStr = (env)->GetStringCritical(groupId, nullptr);
+            groupIdsArray[i] = UTF_16_to_8(groupIdStr).c_str();
+            (env)->ReleaseStringCritical(groupId, groupIdStr);
         }
 
         Highlights::g_highlights.OnOpenSummary(groupIdsArray, numGroups, sigFilterEnum, tagFilterEnum);
