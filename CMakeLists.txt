@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.25)
 project(MCHighlights)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 20)
 
 find_package(JNI REQUIRED)
 include_directories(${JNI_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/include)
