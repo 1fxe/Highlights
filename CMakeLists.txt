@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.25)
-project(Highlights)
+project(MCHighlights)
 
 set(CMAKE_CXX_STANDARD 20)
 

@@ -17,4 +17,9 @@ build/
 *.pch
 
 
-.idea
+*.idea
+*.iml
+ddependency-reduced-pom.xml
+target/
+bin/
+headers/

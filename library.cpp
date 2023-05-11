@@ -2,6 +2,7 @@
 
 #define JSTR_TO_CSTR(env, jstr) (env)->GetStringUTFChars((jstr), NULL)
 #define UTF_16_to_8(str) std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t>{}.to_bytes(std::u16string((char16_t *) str))
+
 #include <iostream>
 
 static std::wstring permissionToStringW(GfeSDK::NVGSDK_Permission p) {
@@ -273,7 +274,6 @@ void Highlights::Wrapper::saveVideo(JNIEnv *env, jstring highlightId, jstring gr
 // TODO Check this works
 void
 Highlights::Wrapper::getNumHighlights(JNIEnv *env, jstring groupId, jobject sigFilter, jobject tagFilter) {
-    // TODO CACHE these fieldscz
     jclass sigFilterClass = env->GetObjectClass(sigFilter);
     jmethodID sigFilterValueMethodId = env->GetMethodID(sigFilterClass, "value", "()I");
     auto sigFilterValue = static_cast<int>(env->CallIntMethod(sigFilter, sigFilterValueMethodId));
@@ -311,7 +311,6 @@ void Highlights::Wrapper::openSummary(JNIEnv *env, jobjectArray groupIds,
     auto sigFilterValue = static_cast<int>(env->CallIntMethod(sigFilter, sigFilterValueMethodId));
     auto sigFilterEnum = (GfeSDK::NVGSDK_HighlightSignificance) sigFilterValue;
 
-    // TODO CACHE these fieldscz
     jclass tagFilterClass = env->GetObjectClass(tagFilter);
     jmethodID tagFilterValueMethodId = env->GetMethodID(tagFilterClass, "value", "()I");
     auto tagFilterValue = static_cast<int>(env->CallIntMethod(tagFilter, tagFilterValueMethodId));
