@@ -12,7 +12,6 @@ import org.lwjgl.system.*;
 
 import java.nio.*;
 import java.util.Collections;
-import java.util.List;
 
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
@@ -22,18 +21,17 @@ import static org.lwjgl.system.MemoryUtil.*;
 
 public class Main {
 
-    Highlights mcHighlights;
+    Highlights highlights;
     // The window handle
     private long window;
 
     public Main() {
-        mcHighlights = new Highlights();
-        List<LocalizedPair> localizedPairs = new java.util.ArrayList<>();
-        localizedPairs.add(new LocalizedPair("en-us", "Player died"));
+        highlights = new Highlights();
         Highlight highlight = new Highlight("STEALTH_KILL", true,
             NVGSDK_HighlightType.NVGSDK_HIGHLIGHT_TYPE_ACHIEVEMENT, NVGSDK_HighlightSignificance.NVGSDK_HIGHLIGHT_SIGNIFICANCE_GOOD,
-            localizedPairs);
-        mcHighlights.init("LWJGL Demo", Collections.singletonList(highlight));
+            Collections.singletonList(new LocalizedPair("en-us", "Player died"))
+        );
+        highlights.init("LWJGL Demo", Collections.singletonList(highlight));
 
         try {
             Thread.sleep(4000);
@@ -41,7 +39,7 @@ public class Main {
             throw new RuntimeException(e);
         }
 
-        mcHighlights.openGroup("mc");
+        highlights.openGroup("GROUP_ONE");
     }
 
     public void run() {
@@ -83,7 +81,7 @@ public class Main {
             if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
                 glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
             else if (key == GLFW_KEY_R && action == GLFW_RELEASE)
-                mcHighlights.saveVideo("STEALTH_KILL", "mc", -1000, 1000);
+                highlights.saveVideo("STEALTH_KILL", "GROUP_ONE", -1000, 1000);
         });
 
         // Get the thread stack and push a new frame
@@ -135,10 +133,10 @@ public class Main {
             // Poll for window events. The key callback above will only be
             // invoked during this call.
             glfwPollEvents();
-            mcHighlights.tick();
+            highlights.tick();
         }
-        
-        mcHighlights.shutdown();
+
+        highlights.shutdown();
     }
 
     public static void main(String[] args) {
